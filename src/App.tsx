@@ -1,7 +1,7 @@
-import {Button} from './components/Button'
-import {ButtonChildren} from './components/ButtonChildren'
-import {ButtonCounter} from './components/ButtonCounter'
+import { BrowserRouter, Route } from "react-router-dom" //Pacote nao foi criado para typescript. Para contornar esse problema, foi adicionar mais um pacote(yarn add @types/react-router-dom -D) para expanção do pacote original.
+
 import { Home } from "./pages/Home"
+import { NewRoom } from "./pages/NewRoom"
 
 function App() 
 {
@@ -11,7 +11,10 @@ function App()
     //   <ButtonChildren>Clique aqui!</ButtonChildren>
     //   <ButtonCounter />
     // </div>
-    <Home/>
+    <BrowserRouter>
+    <Route path="/" exact component={Home}/>
+    <Route path="/rooms/new" component={NewRoom}/>
+    </BrowserRouter>
   );
 }
 
