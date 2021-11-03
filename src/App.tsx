@@ -1,25 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route } from "react-router-dom" //Pacote nao foi criado para typescript. Para contornar esse problema, foi adicionar mais um pacote(yarn add @types/react-router-dom -D) para expanção do pacote original.
 
-function App() {
+import { Home } from "./pages/Home"
+import { NewRoom } from "./pages/NewRoom"
+
+function App() 
+{
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <div>
+    //   <Button text="Button 1"/>
+    //   <ButtonChildren>Clique aqui!</ButtonChildren>
+    //   <ButtonCounter />
+    // </div>
+    <BrowserRouter>
+    <Route path="/" exact component={Home}/>
+    <Route path="/rooms/new" component={NewRoom}/>
+    </BrowserRouter>
   );
 }
 
