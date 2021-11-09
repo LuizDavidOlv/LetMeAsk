@@ -1,19 +1,24 @@
-import { BrowserRouter, Route } from "react-router-dom" //Pacote nao foi criado para typescript. Para contornar esse problema, foi adicionar mais um pacote(yarn add @types/react-router-dom -D) para expanção do pacote original.
+import { createContext } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { Home } from "./pages/Home"
-import { NewRoom } from "./pages/NewRoom"
+import { Home } from "./pages/Home";
+import { NewRoom } from "./pages/NewRoom";
+import { AuthContextProvider } from "./contexts/AuthContext";
+import { Room } from "./pages/Room";
 
-function App() 
-{
+
+export const TestContext = createContext("");
+
+function App() {
   return (
-    // <div>
-    //   <Button text="Button 1"/>
-    //   <ButtonChildren>Clique aqui!</ButtonChildren>
-    //   <ButtonCounter />
-    // </div>
     <BrowserRouter>
-    <Route path="/" exact component={Home}/>
-    <Route path="/rooms/new" component={NewRoom}/>
+      <AuthContextProvider>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/rooms/new" component={NewRoom} />
+          <Route path="/rooms/:id"component={Room} />
+        </Switch>
+      </AuthContextProvider>
     </BrowserRouter>
   );
 }
