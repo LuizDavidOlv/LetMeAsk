@@ -1,5 +1,5 @@
-import { FormEvent, useState } from "react";
-import { useParams } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import logoImg from '../assets/images/logo.svg'
 import { Button } from "../components/Button";
 import { RoomCode } from "../components/RoomCode";
@@ -7,6 +7,8 @@ import { useAuth } from "../hooks/useAuth";
 import { database } from "../services/firebase";
 import "../styles/room.scss";
 import { child, get, push, ref, remove } from "@firebase/database";
+import { title } from "process";
+import { useRoom } from "../hooks/useRoom";
 
 
 
@@ -14,11 +16,27 @@ type RoomParams= {
     id: string;
 }
 
+
 export function Room(){
     const params = useParams<RoomParams>();
     const roomId = params.id;
     const [newQuestion, setNewQuestion] = useState('');
     const {user} =useAuth();
+    const history = useHistory();
+    const { title, questions } = useRoom(roomId);
+
+
+    useEffect(()=>{
+    const dbRef= ref(database);
+
+    get(child(dbRef, `rooms/${roomId}`)).then((room) => {
+        if (!room.val()) {
+          history.push("/");
+        }
+      });
+    });
+
+    
 
     async function handleSendQuestion(event: FormEvent){
 
@@ -57,8 +75,13 @@ return(
         </header>
         <main>
             <div className="room-title">
-                <h1>Sala React</h1>
-                <span>4 perguntas</span> 
+                <h1>Sala {title}</h1>
+                {/* {questions.length>0 && <span>{questions.length} pergunta(s)</span> } */}
+                { questions.length===1? (
+                        <span>1 pergunta</span>
+                    ) : (
+                        <span>{questions.length} perguntas</span>
+                    ) }
             </div>
             <form onSubmit={handleSendQuestion}>
                 <textarea 
@@ -82,6 +105,7 @@ return(
                     </Button>
                 </div>
             </form>
+            {JSON.stringify(questions)}
         </main>
     </div>   
 )}
