@@ -6,9 +6,9 @@ import { RoomCode } from "../components/RoomCode";
 import { useAuth } from "../hooks/useAuth";
 import { database } from "../services/firebase";
 import "../styles/room.scss";
-import { child, get, push, ref, remove } from "@firebase/database";
-import { title } from "process";
+import { child, get, push, ref} from "@firebase/database";
 import { useRoom } from "../hooks/useRoom";
+import { Question } from "../components/Question/index";
 
 
 
@@ -105,7 +105,17 @@ return(
                     </Button>
                 </div>
             </form>
-            {JSON.stringify(questions)}
+            <div className="question-list">
+            {questions.map(question => {
+                return(
+                    <Question
+                        key={question.id}
+                        content={question.content}
+                        author={question.author}
+                    />
+                )
+            })}
+            </div>
         </main>
     </div>   
 )}
