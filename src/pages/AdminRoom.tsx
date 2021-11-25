@@ -9,7 +9,8 @@ import { child, get, ref, remove, update} from "@firebase/database";
 import { useRoom } from "../hooks/useRoom";
 import { Question } from "../components/Question/index";
 import deleteImg from "../assets/images/delete.svg";
-
+import highlightImg from "../assets/images/check.svg";
+import answeredImg from "../assets/images/answer.svg";
 
 
 
@@ -40,6 +41,22 @@ export function AdminRoom(){
             var questionRef= ref(database, `rooms/${roomId}/questions/${questionId}`);
             remove(questionRef);
         }
+    }
+
+    async function handleCheckQuestionAsAnswered(questionId: string){
+        
+        var questionRef= ref(database, `rooms/${roomId}/questions/${questionId}`);
+        update(questionRef,{
+            isAnswered: true
+        })
+    }
+
+    async function handleHighlightQuestion(questionId: string){
+ 
+        var questionRef= ref(database, `rooms/${roomId}/questions/${questionId}`);
+        update(questionRef,{
+            isHighlighted: true
+        })
     }
 
     async function handleEndRoom(){
@@ -80,11 +97,19 @@ return(
                         key={question.id}
                         content={question.content}
                         author={question.author}
+                        isAnswered={question.isAnswered}
+                        isHighlighted={question.isHighlighted}
                     >
+                    
+                    <button type="button" onClick={ () => handleHighlightQuestion(question.id)}>
+                        <img src={highlightImg} alt="Dar destaque a pergunta" />
+                    </button>       
+                    <button type="button" onClick={ () => handleCheckQuestionAsAnswered(question.id)}>
+                        <img src={answeredImg} alt="Coloca a pergunta como respondida" />
+                    </button>         
                     <button type="button" onClick={ () => handleDeleteQuestion(question.id)}>
                         <img src={deleteImg} alt="Remover Pergunta" />
-                    </button>    
-                    
+                    </button>
                     </Question>
                 )
             })}
